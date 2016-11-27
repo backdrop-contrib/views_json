@@ -215,7 +215,7 @@ class views_plugin_style_json extends views_plugin_style {
         'JSON_HEX_AMP' => t('Encode ampersand'),
       ),
       '#multiple' => TRUE,
-      '#default_value' => $this->options['json_char_encoding'],
+      '#default_value' => $this->options['char_encoding'],
       '#description' => t('You can combine multiple options.'),
     );
 
