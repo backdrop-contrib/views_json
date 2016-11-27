@@ -122,9 +122,20 @@ Each style has a range of options you can use to customize the output:
       This specifies the name of the top-level object in the JSON object. The
       default is the name of the view base table (nodes, users, etc.)
   2. JSON data format
-      This specifies the format of the JSON output - either simple, plain-
+      This specifies the format of the JSON output - either simple,
+      single simple object with key value properties, plain-
       vanilla JSON, or the JSON format compatible with the Simile/Exhibit
       application.
+
+	  2.1 "Single Simple Object with key value properties" JSON data format
+		  It is useful when you want to return a single object just for one row,
+		  { title: "Example", status: "published" } instead of {[ ... ]}.
+
+		  This format available when you set "Items per page" views pager setting,
+		  that available on all pager formats except "Display all items".
+		  Also if you try to return more results than one, it will return only first row.
+
+		  This format ignores such options as: "Root object name" & "Top-level child object".
 
  The views_xml plugin has the following options:
   1. XML schema:

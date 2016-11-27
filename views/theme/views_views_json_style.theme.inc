@@ -108,6 +108,37 @@ function template_preprocess_views_views_json_style_simple(&$vars) {
   $vars["rows"] = strlen($root_object) != 0 ? array($root_object => $objects) : $objects;
 }
 
+/**
+ * Theme preprocess for "single simple object" format.
+ *
+ * Set only one row as view rows as object with properties.
+ */
+function template_preprocess_views_views_json_style_simple_object(&$vars) {
+  $rows = &$vars['rows'];
+  $options = $vars["options"];
+  $root_object = $options["root_object"];
+  $top_child_object = $options["top_child_object"];
+  $size = count($rows);
+
+  if ($size < 1) {
+    $rows = new stdClass();
+    return;
+  }
+
+  // We need just only one element.
+  $rows = $size < 1 ? $rows : array_slice($rows, 0, 1);
+
+  template_preprocess_views_views_json_style_simple($vars);
+
+  $row = empty($root_object) ? $rows[0] : $rows[$root_object][0];
+
+  if (array_key_exists($top_child_object, $row)) {
+    $row = $row[$top_child_object];
+  }
+
+  $rows = (object) $row;
+}
+
 function template_preprocess_views_views_json_style_exhibit(&$vars) {
   $view = $vars["view"];
   $rows = $vars["rows"];
