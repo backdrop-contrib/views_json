@@ -106,6 +106,19 @@ function template_preprocess_views_views_json_style_simple(&$vars) {
 
   // check if user wants nested arrays
   $vars["rows"] = strlen($root_object) != 0 ? array($root_object => $objects) : $objects;
+
+  // For pagination, output the total number of pages, the current page, the
+  // total result count, and the limit per page.
+  global $pager_total, $pager_page_array, $pager_total_items, $pager_limits;
+  if (isset($pager_total[0])) {
+    $pager_object = array(
+      'pages' => $pager_total[0],
+      'page' => $pager_page_array[0],
+      'count' => intval($pager_total_items[0]),
+      'limit' => intval($pager_limits[0]),
+    );
+    $vars["rows"]["pager"] = $pager_object;
+  }
 }
 
 /**
