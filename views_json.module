@@ -22,10 +22,29 @@ function views_json_views_pre_render(&$view) {
         foreach ($view->field as $field_name => $field) {
           if ($field instanceof views_handler_field_field) {
             if ($field->field_info['type'] == 'video') {
-
-              // Get the Video URL.
+              $options = $field->options;
               $video = $field->get_value($view->result[$row]);
-              $url = file_create_url($video[0]['uri']);
+
+              if (empty($video)) {
+                continue;
+              }
+
+              switch ($options['type']) {
+                case 'video_formatter_thumbnail':
+                  $settings = $options['settings'];
+                  $thumbnail = $video[0]['thumbnailfile'];
+                  if (!empty($settings['image_style'])) {
+                    $url = image_style_url($settings['image_style'], $thumbnail->uri);
+                  }
+                  else {
+                    $url = file_create_url($thumbnail->uri);
+                  }
+                  break;
+                default:
+                  $url = file_create_url($video[0]['uri']);
+                  break;
+              }
+
               $render_array = array(
                 '#type' => 'markup',
                 '#markup' => filter_xss($url),
