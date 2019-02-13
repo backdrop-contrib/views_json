@@ -311,14 +311,17 @@ function _views_json_check_label($input) {
  * @param $raw
  *   If TRUE, the JSON data is returned as a string.  Otherwise, an object
  *   representation is returned.
+ * @param $current_page
+ *   The page to be fetched.
  * @return
  *   The JSON data in the form of an object or a string or NULL otherwise.
  */
-function views_json_get($name, $display_id = 'default', $args = array(), $raw = FALSE) {
+function views_json_get($name, $display_id = 'default', $args = array(), $raw = FALSE, $current_page = 0) {
   $view = views_get_view($name);
   if (!is_object($view)) {
     return NULL;
   }
+  $view->set_current_page($current_page);
 
   $preview = $view->preview($display_id, $args);
   $start_pos = strpos($preview, '{');
