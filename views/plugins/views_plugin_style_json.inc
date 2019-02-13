@@ -310,7 +310,10 @@ class views_plugin_style_json extends views_plugin_style {
     $rows = array();
     foreach ($view->result as $count => $row) {
       $view->row_index = $count;
-      $rows[] = _views_json_render_fields($view, $row);
+
+      $field_output = _views_json_render_fields($view, $row);
+      drupal_alter('views_json_render_row', $field_output, $view, $row);
+      $rows[] = $field_output;
     }
     unset($view->row_index);
 
