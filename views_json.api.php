@@ -28,5 +28,6 @@ function hook_views_json_render_row_alter(&$field_output, $view, $row) {
     );
   }
 
-  // Note that the $field_output array is not returned – it is modified by reference.
+  // Note that the $field_output array is not returned – it is modified by
+  // reference.
 }
