@@ -278,3 +278,82 @@ function template_preprocess_views_views_json_style_jqgrid(&$vars) {
 
   $vars["rows"] = $very_top;//array($root_object => $objects);
 }
+
+function template_preprocess_views_views_json_style_autocomplete(&$vars) {
+  // Use simple theme suggestion.
+  $vars['theme_hook_suggestion'] = 'views_views_json_style_simple';
+
+  $view = $vars["view"];
+  $rows = $vars["rows"];
+  $options = $vars["options"];
+  $plaintext_output = $options["plaintext_output"];
+
+  // Create bitmask for json_encode.
+  $option_defs = $vars['view']->style_plugin->option_definition();
+  $bitmasks = $option_defs['encoding']['contains'];
+  $bitmask = NULL;
+  foreach ($bitmasks as $mask_key => $_bitmask) {
+    $mask_options = &$options[$mask_key];
+    if (isset($mask_options) && $mask_options && !is_array($mask_options)) {
+      $bitmask = $bitmask | constant($_bitmask['bitmask']);
+    }
+  }
+  $vars['bitmask'] = $bitmask;
+
+  $autocomplete = array();
+  foreach ($rows as $row) {
+    // First field is the key and second is the value.
+    $k = 0;
+    foreach ($row as $field) {
+      if ($options["field_output"] == "normal") {
+        if (!$field->is_multiple) {
+          if ($plaintext_output) {
+            $decoded_content = html_entity_decode($field->content, ENT_QUOTES);
+            $content = strip_tags($decoded_content);
+          }
+          else {
+            $content = $field->content;
+          }
+          if (!mb_check_encoding($content, 'UTF-8')) {
+            $content = utf8_encode($content);
+          }
+        }
+        else {
+          $content = array();
+          foreach ($field->content as $n => $oc) {
+            if ($plaintext_output) {
+              $content[$n] = strip_tags($oc);
+            }
+            else {
+              $content[$n] = $oc;
+            }
+          }
+        }
+      }
+      elseif ($options["field_output"] == "raw") {
+        if (!$field->is_multiple) {
+          $content = $plaintext_output ? strip_tags($field->raw) : $field->raw;
+        }
+        else {
+          $content = array();
+          foreach ($field->raw as $n => $oc) {
+            $content[$n] = $plaintext_output ? strip_tags($oc) : $oc;
+          }
+        }
+      }
+
+      // First field is the key.
+      if ($k++ == 0) {
+        $label = $content;
+      }
+      else {
+        // Second field is value, so now we can stop.
+        break;
+      }
+    }
+
+    $autocomplete[$label] = $content;
+  }
+
+  $vars["rows"] = $autocomplete;
+}
