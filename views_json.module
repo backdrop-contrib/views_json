@@ -174,7 +174,35 @@ function _views_json_render_fields($view, $row) {
     }
     else {
       $field_output = $view->field[$field->options['id']]->advanced_render($row);
-      $field_raw = (isset($view->field[$id]->field_alias) && isset($row->{$view->field[$id]->field_alias})) ? $row->{$view->field[$id]->field_alias} : NULL;
+      $handler = $view->field[$id]->handler_type;
+      $fieldname = $handler . '_' . $id;
+      // For fields with result content, we need to use field-specific logic.
+      if ($handler == 'field' && isset($row->$fieldname)) {
+        $field_id = "field_{$id}";
+        switch ($field->field_info['type']) {
+          case 'taxonomy_term_reference':
+            $field_raw = $row->{$field_id}[0]['raw']['taxonomy_term']->name;
+            break;
+          case 'link_field':
+            $field_raw = $row->{$field_id}[0]['raw']['url'];
+            break;
+          case 'email':
+            $field_raw = $row->{$field_id}[0]['raw']['email'];
+            break;
+          case 'video':
+          case 'file':
+          case 'image':
+            $field_raw = file_create_url($row->{$field_id}[0]['raw']['uri']);
+            break;
+          default:
+            $field_raw = $row->{$field_id}[0]['raw']['value'];
+            break;
+        }
+      }
+      else {
+        // Otherwise it's an internal value.
+        $field_raw = $row->{$view->field[$id]->field_alias};
+      }
       // Check if this is field is the entity's label.
       if (empty($field->base_table)) {
         $entity_info = entity_get_info($field->table);
