@@ -178,9 +178,13 @@ function _views_json_render_fields($view, $row) {
             if (preg_match('/(src)="([^"]*)"/i', $img_match[0], $src_match)) {
               $field_output[$i]['src'] = $src_match[2];
               $field_output[$i]['alt'] = '';
+              $field_output[$i]['title'] = '';
 
               if (preg_match('/(alt)="([^"]*)"/i', $img_match[0], $alt_match)) {
                 $field_output[$i]['alt'] = $alt_match[2];
+              }
+              if (preg_match('/(title)="([^"]*)"/i', $img_match[0], $alt_match)) {
+                $field_output[$i]['title'] = $alt_match[2];
               }
             }
           }
@@ -198,9 +202,13 @@ function _views_json_render_fields($view, $row) {
                 if (preg_match('/(src)="([^"]*)"/i', $img_match, $src_match)) {
                   $field_output[$i]['src'] = $src_match[2];
                   $field_output[$i]['alt'] = '';
+                  $field_output[$i]['title'] = '';
 
                   if (preg_match('/(alt)="([^"]*)"/i', $img_match, $alt_match)) {
                     $field_output[$i]['alt'] = $alt_match[2];
+                  }
+                  if (preg_match('/(title)="([^"]*)"/i', $img_match, $alt_match)) {
+                    $field_output[$i]['title'] = $alt_match[2];
                   }
                 }
               }
@@ -209,9 +217,13 @@ function _views_json_render_fields($view, $row) {
               if (preg_match('/(src)="([^"]*)"/i', $img_matches[0][0], $src_match)) {
                 $field_output['src'] = $src_match[2];
                 $field_output['alt'] = '';
+                $field_output['title'] = '';
 
                 if (preg_match('/(alt)="([^"]*)"/i', $img_matches[0][0], $alt_match)) {
                   $field_output['alt'] = $alt_match[2];
+                }
+                if (preg_match('/(title)="([^"]*)"/i', $img_matches[0][0], $alt_match)) {
+                  $field_output['title'] = $alt_match[2];
                 }
               }
             }
