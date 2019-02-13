@@ -158,7 +158,7 @@ function _views_json_render_fields($view, $row) {
       // Check if this is field is the entity's label.
       if (empty($field->base_table)) {
         $entity_info = entity_get_info($field->table);
-        if (isset($entity_info['entity keys'])) {
+        if (isset($entity_info['entity keys']['label'])) {
           $label_field = $entity_info['entity keys']['label'];
           if ($field->real_field == $label_field) {
             // Decode html entities in label field as views does this by default for those fields.
