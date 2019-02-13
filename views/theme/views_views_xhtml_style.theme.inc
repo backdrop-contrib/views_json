@@ -25,7 +25,7 @@ function template_preprocess_views_views_xhtml_style_hcard(&$vars) {
   $plaintext_output = $options["plaintext_output"];
   $vars["content_type"] = ($options['content_type'] == 'default') ? 'text/html' : $options['content_type'];
   $header = $options["header"];
-  if (!$vars["header"]) {
+  if (empty($vars["header"])) {
     $vars["title"] = check_plain(($view->get_title() ? $view->get_title() : $view->name));
     $vars["id"] = check_url($view->get_url());
     $vars["author"] = _views_xhtml_format_author($options["author"]);

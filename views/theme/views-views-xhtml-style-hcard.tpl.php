@@ -11,10 +11,10 @@
  * @ingroup views_templates
  */
 
-$xhtml .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . "\n";
+$xhtml = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . "\n";
 $xhtml .= '<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr"' . ">\r\n";
 $xhtml .= '<head>' . "\r\n";
-if (!$header) { //build our own header
+if (empty($header)) { //build our own header
   $xhtml .= '  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' . "\r\n";
   $xhtml .= '  <meta name="KEYWORDS" content="hCards" />' . "\r\n";
   $xhtml .= '  <title>hCards</title>' . "\r\n";
