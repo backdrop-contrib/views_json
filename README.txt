@@ -78,7 +78,10 @@ is based on, only what fields are present in the view.
 CONFIGURATION
 -------------
 
-Each style has a range of options you can use to customize the output:
+CORS headers can be added using the CORS module:
+https://www.drupal.org/project/cors
+
+Each style has a range of options you can use to customize the output.
 
 The following options are common to all plugins:
 
