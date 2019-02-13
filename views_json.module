@@ -134,6 +134,7 @@ function _views_json_render_multiple_field($field, $values) {
  */
 function _views_json_render_fields($view, $row) {
   $field_ids = array_keys($view->field);
+  $fields_info = $view->display_handler->get_option('fields');
   $rendered_fields = array();
   foreach ($field_ids as $id) {
     $field = $view->field[$id];
@@ -245,7 +246,18 @@ function _views_json_render_fields($view, $row) {
         }
         $object->raw = $field_raw;
         $object->class = drupal_clean_css_identifier(strtolower($id));//views_css_safe($id);
-        $object->label = check_plain($view->field[$id]->label());
+
+        if (isset($view->style_options['translate_labels']) && $view->style_options['translate_labels']) {
+          $label = $view->field[$id]->label();
+        }
+        elseif (isset($fields_info) && isset($fields_info[$id]['label'])) {
+          $label = $fields_info[$id]['label'];
+        }
+        else {
+          $label = $field->label();
+        }
+        $object->label = check_plain($label);
+
         $object->is_multiple = $field_is_multiple;
         $rendered_fields[$id] = $object;
       }

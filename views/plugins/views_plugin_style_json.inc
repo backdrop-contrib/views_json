@@ -46,6 +46,10 @@ class views_plugin_style_json extends views_plugin_style {
       'default' => FALSE,
       'translatable' => FALSE
     );
+    $options['translate_labels'] = array(
+      'default' => FALSE,
+      'translatable' => FALSE
+    );
 
     // Encoding options, to be used by json_encode().
     $options['encoding'] = array(
@@ -201,6 +205,13 @@ class views_plugin_style_json extends views_plugin_style {
       '#title' => t('Views API mode'),
       '#default_value' => $this->options['using_views_api_mode'],
       '#description' => t('With Views API mode the JSON will embedded as normal content so normal page processing is used. Leave it unchecked when JSON should be printed directly to the client.'),
+    );
+
+    $form['translate_labels'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Translate labels'),
+      '#default_value' => $this->options['translate_labels'],
+      '#description' => t('Allow labels to be translated'),
     );
 
     // JSON encoding options.
