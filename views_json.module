@@ -19,7 +19,7 @@ function views_json_autoload_info() {
 function views_json_views_api() {
   return array(
     'api' => '2.0',
-    'path' => drupal_get_path('module', 'views_json') . '/views',
+    'path' => backdrop_get_path('module', 'views_json') . '/views',
   );
 }
 
@@ -110,7 +110,7 @@ function _views_json_render_multiple_field($field, $values) {
     }
 
     // Build a pseudo-node from the retrieved values.
-    $node = drupal_clone($values);
+    $node = backdrop_clone($values);
     // content_format and formatters will need a 'type'.
     $node->type = $values->{$field->aliases['type']};
     $node->nid = $values->{$field->aliases['nid']};
@@ -306,7 +306,7 @@ function _views_json_render_fields($view, $row) {
           $object->content = $field_output;
         }
         $object->raw = $field_raw;
-        $object->class = drupal_clean_css_identifier(strtolower($id));//views_css_safe($id);
+        $object->class = backdrop_clean_css_identifier(strtolower($id));//views_css_safe($id);
 
         if (isset($view->style_options['translate_labels']) && $view->style_options['translate_labels']) {
           $label = $view->field[$id]->label();
@@ -420,7 +420,7 @@ function _views_json_encode_formatted($v, $options, $depth = 0) {
   $eol = '<br />';
   $indent = str_repeat($base_indent, $depth);
 
-  // This is based on the drupal_to_js() function.
+  // This is based on the backdrop_to_js() function.
   switch (gettype($v)) {
     case 'boolean':
       // Lowercase is necessary!

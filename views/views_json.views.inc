@@ -17,7 +17,7 @@ function views_json_views_plugins() {
     $additional_themes['views_views_json_style_' . $format] = 'style';
   }
 
-  $path = drupal_get_path('module', 'views_json') . '/views';
+  $path = backdrop_get_path('module', 'views_json') . '/views';
   return array(
     'module' => 'views_json',
     'style' => array(
