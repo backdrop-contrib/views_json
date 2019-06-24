@@ -1,5 +1,19 @@
 <?php
 /**
+ * @file
+ * Views style plugin to render content as JSON.
+ */
+
+/**
+ * Implements hook_autoload_info().
+ */
+function views_json_autoload_info() {
+  return array(
+    'views_plugin_style_json' => 'views/plugins/views_plugin_style_json.inc',
+  );
+}
+
+/**
  * Implements hook_views_api().
  */
 function views_json_views_api() {
