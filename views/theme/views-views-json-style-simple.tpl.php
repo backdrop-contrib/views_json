@@ -1,14 +1,16 @@
 <?php
 /**
- * @file views-views-json-style-simple.tpl.php
- * Default template for the Views JSON style plugin using the simple format
+ * @file
+ * Default theme implementation to display Views JSON "Simple" format output.
  *
- * Variables:
+ * Available variables:
  * - $view: The View object.
  * - $rows: Hierachial array of key=>value pairs to convert to JSON
  * - $options: Array of options for this style
  *
- * @ingroup views_templates
+ * @see template_preprocess_views_views_json_style_simple()
+ *
+ * @ingroup themeable
  */
 
 

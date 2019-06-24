@@ -20,8 +20,7 @@
 function hook_views_json_render_row_alter(&$field_output, $view, $row) {
   if (isset($row->field_entity_reference[0]['raw']['entity'])) {
     $entity = $row->field_entity_reference[0]['raw']['entity'];
-    // Note that the $field_output array is not returned – it is modified by
-    // reference.
+    // Note: $field_output is modified by reference, it is not returned.
     $field_output['field_entity_reference']->content = array(
       'type' => $entity->type,
       'title' => $entity->title,

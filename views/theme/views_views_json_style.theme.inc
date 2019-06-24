@@ -1,16 +1,23 @@
 <?php
-
 /**
  * @file
- * Views theme to render view fields as JSON.
+ * Theme and preprocess functions for views output.
+ *
+ * @todo move this file up a direcotry when the follwing issie is resolved:
+ *   https://github.com/backdrop/backdrop-issues/issues/1468
+ */
+
+/**
+ * Prepares vairables for Views JSON "Simple" format templates.
  *
  * - $view: The view in use.
  * - $rows: Array of row objects as rendered by _views_json_render_fields
  * - $attachment: Not used currently
  * - $options: The options for the style passed in from the UI.
  *
- * @ingroup views_templates
  * @see views_json.views.inc
+ * @see views-json-style-tpl.php
+ * @see views-views-json-style-simple.php
  */
 function template_preprocess_views_views_json_style_simple(&$variables) {
   $view = $variables["view"];
@@ -122,9 +129,12 @@ function template_preprocess_views_views_json_style_simple(&$variables) {
 }
 
 /**
- * Theme preprocess for "single simple object" format.
+ * Prepares variables for Views JSON "single simple object" format templates.
  *
- * Set only one row as view rows as object with properties.
+ * Sets only one row as view rows as object with properties.
+ *
+ * @see views_json.views.inc
+ * @see views-views-json-style-simple-object.tpl.php
  */
 function template_preprocess_views_views_json_style_simple_object(&$variables) {
   $rows = &$variables['rows'];
@@ -152,6 +162,12 @@ function template_preprocess_views_views_json_style_simple_object(&$variables) {
   $rows = (object) $row;
 }
 
+/**
+ * Prepares variables for JSON Simile/Exhibit templates.
+ *
+ * @see views_json.views.inc
+ * @see views-views-json-style-exhibit.tpl.php
+ */
 function template_preprocess_views_views_json_style_exhibit(&$variables) {
   $view = $variables["view"];
   $rows = $variables["rows"];
@@ -217,6 +233,11 @@ function template_preprocess_views_views_json_style_exhibit(&$variables) {
   $variables["rows"] = strlen($root_object) != 0 ? array($root_object => $objects) : $objects;
 }
 
+/**
+ * Prepares variables for...
+ *
+ * @see
+ */
 function template_preprocess_views_views_json_style_jqgrid(&$variables) {
   $view = $variables["view"];
   $rows = $variables["rows"];
@@ -279,6 +300,11 @@ function template_preprocess_views_views_json_style_jqgrid(&$variables) {
   $variables["rows"] = $very_top;//array($root_object => $objects);
 }
 
+/**
+ * Prepares variables for...
+ *
+ * @see
+ */
 function template_preprocess_views_views_json_style_autocomplete(&$variables) {
   // Use simple theme suggestion.
   $variables['theme_hook_suggestion'] = 'views_views_json_style_simple';

@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Implements views_plugin_style for views_json
+ * Implements views_plugin_style for views_json.
  */
 
 /**

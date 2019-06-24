@@ -74,10 +74,15 @@ function views_json_views_pre_render(&$view) {
 }
 
 /**
- * We almost duplicate the content_handler_field_multiple::render function
- * to get the multiple rendered field values in an array
+ * Gets the multiple rendered field values in an array.
+ *
+ * Note: this is almost a copy of content_handler_field_multiple::render().
+ *
  * @param $field
+ *   @todo
  * @param $values
+ *   @todo
+ *
  * @return unknown_type
  */
 function _views_json_render_multiple_field($field, $values) {
@@ -156,12 +161,14 @@ function _views_json_render_multiple_field($field, $values) {
 }
 
 /**
- * Takes each field from a row object and renders the field as determined by the field's theme
+ * Takes each field from a row object and renders the field as determined by
+ * the field's theme.
  *
  * @param $view
  *   View the row belongs to
  * @param $row
  *   Row object
+ *
  * @return array
  *   Object containing all the raw and rendered fields
  */
@@ -332,6 +339,7 @@ function _views_json_render_fields($view, $row) {
  *
  * @param $input
  *   Identifier string to process.
+ *
  * @return
  *   Identifier string with illegal characters stripped away.
  */
@@ -374,6 +382,7 @@ function _views_json_check_label($input) {
  *   representation is returned.
  * @param $current_page
  *   The page to be fetched.
+ *
  * @return
  *   The JSON data in the form of an object or a string or NULL otherwise.
  */
@@ -411,7 +420,8 @@ function views_json_get($name, $display_id = 'default', $args = array(), $raw = 
 /**
  * Encodes JSON in a pretty-printed fashion.
  *
- * @deprecated The $option parameter in PHP 5.4.0 json_encode() deprecates this function.
+ * @deprecated The $option parameter in PHP 5.4.0 json_encode() deprecates this
+ *   function.
  *
  * @see _views_json_json_encode
  */
