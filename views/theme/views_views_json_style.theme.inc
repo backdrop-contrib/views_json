@@ -12,10 +12,10 @@
  * @ingroup views_templates
  * @see views_json.views.inc
  */
-function template_preprocess_views_views_json_style_simple(&$vars) {
-  $view = $vars["view"];
-  $rows = $vars["rows"];
-  $options = $vars["options"];
+function template_preprocess_views_views_json_style_simple(&$variables) {
+  $view = $variables["view"];
+  $rows = $variables["rows"];
+  $options = $variables["options"];
   $base = $view->base_table;
   $root_object = $options["root_object"];
   $top_child_object = $options["top_child_object"];
@@ -23,7 +23,7 @@ function template_preprocess_views_views_json_style_simple(&$vars) {
   $objects = array();
 
   // Create bitmask for json_encode.
-  $option_defs = $vars['view']->style_plugin->option_definition();
+  $option_defs = $variables['view']->style_plugin->option_definition();
   $bitmasks = $option_defs['encoding']['contains'];
   $bitmask = NULL;
   foreach ($bitmasks as $mask_key => $_bitmask) {
@@ -31,7 +31,7 @@ function template_preprocess_views_views_json_style_simple(&$vars) {
       $bitmask = $bitmask | constant($_bitmask['bitmask']);
     }
   }
-  $vars['bitmask'] = $bitmask;
+  $variables['bitmask'] = $bitmask;
 
   foreach ($rows as $row) {
 
@@ -105,7 +105,7 @@ function template_preprocess_views_views_json_style_simple(&$vars) {
   }
 
   // check if user wants nested arrays
-  $vars["rows"] = strlen($root_object) != 0 ? array($root_object => $objects) : $objects;
+  $variables["rows"] = strlen($root_object) != 0 ? array($root_object => $objects) : $objects;
 
   // For pagination, output the total number of pages, the current page, the
   // total result count, and the limit per page.
@@ -117,7 +117,7 @@ function template_preprocess_views_views_json_style_simple(&$vars) {
       'count' => intval($pager_total_items[0]),
       'limit' => intval($pager_limits[0]),
     );
-    $vars["rows"]["pager"] = $pager_object;
+    $variables["rows"]["pager"] = $pager_object;
   }
 }
 
@@ -126,9 +126,9 @@ function template_preprocess_views_views_json_style_simple(&$vars) {
  *
  * Set only one row as view rows as object with properties.
  */
-function template_preprocess_views_views_json_style_simple_object(&$vars) {
-  $rows = &$vars['rows'];
-  $options = $vars["options"];
+function template_preprocess_views_views_json_style_simple_object(&$variables) {
+  $rows = &$variables['rows'];
+  $options = $variables["options"];
   $root_object = $options["root_object"];
   $top_child_object = $options["top_child_object"];
   $size = count($rows);
@@ -141,7 +141,7 @@ function template_preprocess_views_views_json_style_simple_object(&$vars) {
   // We need just only one element.
   $rows = $size < 1 ? $rows : array_slice($rows, 0, 1);
 
-  template_preprocess_views_views_json_style_simple($vars);
+  template_preprocess_views_views_json_style_simple($variables);
 
   $row = empty($root_object) ? $rows[0] : $rows[$root_object][0];
 
@@ -152,10 +152,10 @@ function template_preprocess_views_views_json_style_simple_object(&$vars) {
   $rows = (object) $row;
 }
 
-function template_preprocess_views_views_json_style_exhibit(&$vars) {
-  $view = $vars["view"];
-  $rows = $vars["rows"];
-  $options = $vars["options"];
+function template_preprocess_views_views_json_style_exhibit(&$variables) {
+  $view = $variables["view"];
+  $rows = $variables["rows"];
+  $options = $variables["options"];
   $base = $view->base_table;
   $root_object = "Items";
   $top_child_object = $options["top_child_object"];
@@ -214,13 +214,13 @@ function template_preprocess_views_views_json_style_exhibit(&$vars) {
   }
 
   // check if user wants nested arrays
-  $vars["rows"] = strlen($root_object) != 0 ? array($root_object => $objects) : $objects;
+  $variables["rows"] = strlen($root_object) != 0 ? array($root_object => $objects) : $objects;
 }
 
-function template_preprocess_views_views_json_style_jqgrid(&$vars) {
-  $view = $vars["view"];
-  $rows = $vars["rows"];
-  $options = $vars["options"];
+function template_preprocess_views_views_json_style_jqgrid(&$variables) {
+  $view = $variables["view"];
+  $rows = $variables["rows"];
+  $options = $variables["options"];
   $base = $view->base_table;
   $root_object = $options["root_object"];
   $top_child_object = $options["top_child_object"];
@@ -276,20 +276,20 @@ function template_preprocess_views_views_json_style_jqgrid(&$vars) {
     $very_top['rows'] = $objects;
   }
 
-  $vars["rows"] = $very_top;//array($root_object => $objects);
+  $variables["rows"] = $very_top;//array($root_object => $objects);
 }
 
-function template_preprocess_views_views_json_style_autocomplete(&$vars) {
+function template_preprocess_views_views_json_style_autocomplete(&$variables) {
   // Use simple theme suggestion.
-  $vars['theme_hook_suggestion'] = 'views_views_json_style_simple';
+  $variables['theme_hook_suggestion'] = 'views_views_json_style_simple';
 
-  $view = $vars["view"];
-  $rows = $vars["rows"];
-  $options = $vars["options"];
+  $view = $variables["view"];
+  $rows = $variables["rows"];
+  $options = $variables["options"];
   $plaintext_output = $options["plaintext_output"];
 
   // Create bitmask for json_encode.
-  $option_defs = $vars['view']->style_plugin->option_definition();
+  $option_defs = $variables['view']->style_plugin->option_definition();
   $bitmasks = $option_defs['encoding']['contains'];
   $bitmask = NULL;
   foreach ($bitmasks as $mask_key => $_bitmask) {
@@ -298,7 +298,7 @@ function template_preprocess_views_views_json_style_autocomplete(&$vars) {
       $bitmask = $bitmask | constant($_bitmask['bitmask']);
     }
   }
-  $vars['bitmask'] = $bitmask;
+  $variables['bitmask'] = $bitmask;
 
   $autocomplete = array();
   foreach ($rows as $row) {
@@ -355,5 +355,5 @@ function template_preprocess_views_views_json_style_autocomplete(&$vars) {
     $autocomplete[$label] = $content;
   }
 
-  $vars["rows"] = $autocomplete;
+  $variables["rows"] = $autocomplete;
 }
