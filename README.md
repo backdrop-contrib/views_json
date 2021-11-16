@@ -53,7 +53,7 @@ Installation
  -------------------
 
  - Jen Lampton (https://github.com/jenlampton)
- - Seeking additional maintainers
+ - [Indigoxela](https://github.com/indigoxela)
 
  Credits
  -------
