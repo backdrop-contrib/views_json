@@ -179,7 +179,10 @@ class views_plugin_style_json extends views_plugin_style {
     $pager = $this->view->display_handler->get_option('pager');
     if ($pager['options']['items_per_page'] != 1) {
       unset($form['format']['#options']['simple_object']);
-      $form['format']['#default_value'] = 'simple';
+      // Override default value only if it is 'simple_object'.
+      if ($form['format']['#default_value'] == 'simple_object') {
+        $form['format']['#default_value'] = 'simple';
+      }
     }
 
     $form['jsonp_prefix'] = array(

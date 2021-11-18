@@ -18,21 +18,44 @@ if (!empty($options["grouping"][0]["field"])) {
   $group = $options["grouping"][0]["field"];
   // If a label is set for the grouped field, get it and use it instead of the machine name.
   // $options uses the labeled name of the field, so we need to match that for grouping.
-  $group_label = $view->query->pager->display->handler->handlers['field'][$group]->options['label'];
-  if (strlen($group_label) > 0) {
-    $group = $group_label;
+  if ($options['field_output'] != 'raw') {
+    $group_label = $view->query->pager->display->handler->handlers['field'][$group]->options['label'];
+    if (strlen($group_label) > 0) {
+      $group = $group_label;
+    }
   }
   $root = $options["root_object"];
   $top_child = $options["top_child_object"];
 
   $grouped = array();
-  foreach ($rows[$root] as $key => $array) { // Values are numeric
-    // Grab the grouping field value from inside the 3rd-level array.
-    $groupnode = $array[$top_child][$group];
-    foreach ($array[$top_child] as $prop => $value) {
-      if ($prop != $group) { // Ignore grouped field
-        $grouped[$root][$groupnode][$prop][$key] = $value;
+  if (!empty($root)) {
+    foreach ($rows[$root] as $key => $array) {
+      // Array has 3 levels.
+      if (!empty($top_child)) {
+        $groupnode = $array[$top_child][$group];
+        unset($array[$top_child][$group]);
+        $grouped[$root][$groupnode][] = $array;
       }
+      // Array has 2 levels.
+      else {
+        $groupnode = $array[$group];
+        unset($array[$group]);
+        $grouped[$root][$groupnode][] = $array;
+      }
+    }
+  }
+  else {
+    foreach ($rows as $index => $value) {
+      // @todo does a top_child without root make sense?
+      if (!empty($top_child)) {
+        $groupnode = $value[$top_child][$group];
+        unset($value[$top_child][$group]);
+      }
+      else {
+        $groupnode = $value[$group];
+        unset($value[$group]);
+      }
+      $grouped[$groupnode][] = $value;
     }
   }
   $rows = $grouped;
