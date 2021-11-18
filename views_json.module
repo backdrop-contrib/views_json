@@ -222,7 +222,15 @@ function _views_json_render_fields($view, $row) {
       }
       else {
         // Otherwise it's an internal value.
-        $field_raw = $row->{$view->field[$id]->field_alias};
+        $alias = $view->field[$id]->field_alias;
+        if (isset($row->{$alias})) {
+          $field_raw = $row->{$alias};
+        }
+        else {
+          // Pseudo fields like "Global: Custom text" have no raw value from
+          // database.
+          $field_raw = $field_output;
+        }
       }
       // Check if this is field is the entity's label.
       if (empty($field->base_table)) {
