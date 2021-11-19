@@ -200,7 +200,7 @@ function _views_json_render_fields($view, $row) {
       // For fields with result content, we need to use field-specific logic.
       if ($handler == 'field' && isset($row->$fieldname)) {
         $field_id = "field_{$id}";
-        if (!isset($row->{$field_id}[0])) {
+        if (empty($row->{$field_id})) {
           continue;
         }
         switch ($field->field_info['type']) {
