@@ -68,7 +68,7 @@ function views_json_views_json_formats() {
     'simple_object' => t('Single Simple Object with key value properties'),
     'exhibit' => t('MIT Simile/Exhibit'),
     'jqgrid' => t('To be consumed by jqGrid'),
-    'autocomplete' => t('Drupal autocomplete'),
+    'autocomplete' => t('Backdrop autocomplete'),
   );
   return $formats;
 }
