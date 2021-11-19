@@ -18,8 +18,8 @@ JSON data documents are available in following formats:
 
 ## Installation
 
-- Install this module using the official Backdrop CMS instructions at
-  https://backdropcms.org/guide/modules.
+- Install this module using the official 
+  [Backdrop CMS instructions](https://docs.backdropcms.org/documentation/extend-with-modules)
 - In the Views UI set the view style (in Format section) to JSON data document
   to render as Simple JSON or Simile/Exhibit JSON.
 - In the view format settings choose the options or vocabulary for your format.
