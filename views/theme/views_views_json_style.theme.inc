@@ -288,14 +288,23 @@ function template_preprocess_views_views_json_style_jqgrid(&$variables) {
     $objects[] = $object;
   }
 
+  $very_top = array();
   if (isset($view->query->pager)) {
     global $pager_total, $pager_total_items;
 
-    $pager_id = $view->query->pager->options['id'];
-    $very_top['page'] = $view->query->pager->current_page + 1;
-    $very_top['records'] = $pager_total_items[$pager_id];
-    $very_top['total'] = $pager_total[$pager_id];
-    $very_top['rows'] = $objects;
+    if ($pager_total !== NULL) {
+      $pager_id = $view->query->pager->options['id'];
+      $very_top['page'] = $view->query->pager->current_page + 1;
+      $very_top['records'] = $pager_total_items[$pager_id];
+      $very_top['total'] = $pager_total[$pager_id];
+      $very_top['rows'] = $objects;
+    }
+    else {
+      if ($view->preview) {
+        $message = t('The jqGrid data format needs settings for paged output.');
+        backdrop_set_message($message, 'warning');
+      }
+    }
   }
 
   $variables["rows"] = $very_top;//array($root_object => $objects);
