@@ -239,6 +239,7 @@ function template_preprocess_views_views_json_style_exhibit(&$variables) {
  * @see
  */
 function template_preprocess_views_views_json_style_jqgrid(&$variables) {
+  $variables['theme_hook_suggestion'] = 'views_views_json_style_simple';
   $view = $variables["view"];
   $rows = $variables["rows"];
   $options = $variables["options"];
