@@ -41,6 +41,12 @@ Additional documentation is located in the
 Bugs and Feature requests should be reported in the
  [Issue Queue](https://github.com/backdrop-contrib/views_json/issues.)
 
+## Known Issues
+
+- The Simile/Exhibit and JqGrid output format hasn't been fully tested. It's
+  not guaranteed that they work properly.
+- Not all setting combinations have been tested.
+
 ## Current Maintainers
 
 - [Jen Lampton](https://github.com/jenlampton)
