@@ -267,20 +267,6 @@ class views_plugin_style_json extends views_plugin_style {
       '#default_value' => $this->options['char_encoding'],
       '#description' => t('You can combine multiple options.'),
     );
-
-    // Only enable options supported by the current PHP version.
-    if (!(PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 4)) {
-      $php5_4_ops = array(
-        'bigint_string',
-        'pretty_print',
-        'unescaped_slashes',
-        'unescaped_unicode'
-      );
-      foreach ($php5_4_ops as $op) {
-        $form[$op]['#disabled'] = TRUE;
-        $form[$op]['#description'] .= ' <b>Requires PHP 5.4 or greater</b>.';
-      }
-    }
   }
 
   /**
