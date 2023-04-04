@@ -510,30 +510,20 @@ function _views_json_debug_stop($var, $location) {
 }
 
 /**
- * Backwards-compatible JSON encoder.
- *
- * Provides backwars-compatible support for more JSON encoding formats.
- * Uses PHP's native JSON encoding when PHP 5.3.0 or greater is detected.
- * Fallbacks to manual encoding/escaping when PHP 5.2.x and below is detected.
+ * Simple wrapper for json_encode().
  *
  * @param array $rows
  *   Results from template_preprocess_views_views_json_style_simple().
- * @param int $bitmask
- *   Integer to use as the $bitmask parameter for json_encode().
+ * @param int|null $bitmask
+ *   Integer to use as the $bitmask parameter for json_encode(), can be null
+ *   with default settings for views style options.
  */
 function _views_json_json_encode($rows, $bitmask = NULL) {
-  if(defined('PHP_MAJOR_VERSION') && PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3) {
+  if (isset($bitmask)) {
     $json = json_encode($rows, $bitmask);
-    // Encoding features not supported before 5.4.x.
-    if (PHP_MINOR_VERSION <= 4) {
-      $json = str_replace(array('\/'), array('/'), $json);
-    }
   }
-  // For php 5.2 and below
   else {
     $json = json_encode($rows);
-    // Fix for issue #1613344.
-    $json = str_replace(array('\/'), array('/'), $json);
   }
   return $json;
 }
