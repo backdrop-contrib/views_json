@@ -18,7 +18,7 @@ function views_json_autoload_info() {
  */
 function views_json_views_api() {
   return array(
-    'api' => '2.0',
+    'api' => 3,
     'path' => backdrop_get_path('module', 'views_json') . '/views',
   );
 }
