@@ -218,6 +218,9 @@ function _views_json_render_fields($view, $row) {
           case 'image':
             $field_raw = file_create_url($row->{$field_id}[0]['raw']['uri']);
             break;
+          case 'entityreference':
+            $field_raw = $row->{$field_id}[0]['raw']['target_id'];
+            break;
           default:
             $field_raw = $row->{$field_id}[0]['raw']['value'];
             break;
