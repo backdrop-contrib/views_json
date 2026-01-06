@@ -148,7 +148,6 @@ function _views_json_render_fields($view, $row) {
           // Decode html entities in label field as views does this by default
           // for those fields.
           $field_output = html_entity_decode($field_output, ENT_QUOTES);
-          $field_output = mb_check_encoding($field_output, 'UTF-8') ? $field_output : utf8_encode($field_output);
         }
       }
     }

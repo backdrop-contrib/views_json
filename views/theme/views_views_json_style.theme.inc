@@ -57,13 +57,11 @@ function template_preprocess_views_views_json_style_simple(&$variables) {
             $content = array();
             foreach ($field->content as $key => $value) {
               $safe = $plaintext_output ? strip_tags(html_entity_decode($value, ENT_QUOTES)) : $value;
-              $safe = mb_check_encoding($safe, 'UTF-8') ? $safe : utf8_encode($safe);
               $content[$key] = $safe;
             }
           }
           else {
             $content = $plaintext_output ? strip_tags(html_entity_decode($field->content, ENT_QUOTES)) : $field->content;
-            $content = mb_check_encoding($content, 'UTF-8') ? $content : utf8_encode($content);
           }
         }
         else {
@@ -190,7 +188,6 @@ function template_preprocess_views_views_json_style_exhibit(&$variables) {
         }
         if (!$field->is_multiple) {
           $content = $plaintext_output ? strip_tags(html_entity_decode($field->content, ENT_QUOTES)) : $field->content;
-          $content = mb_check_encoding($content, 'UTF-8') ? $content : utf8_encode($content);
         }
         else {
           $content = array();
@@ -260,7 +257,6 @@ function template_preprocess_views_views_json_style_jqgrid(&$variables) {
 
         if (!$field->is_multiple) {
           $content = $plaintext_output ? strip_tags(html_entity_decode($field->content, ENT_QUOTES)) : $field->content;
-          $content = mb_check_encoding($content, 'UTF-8') ? $content : utf8_encode($content);
         }
         else {
           $content = array();
@@ -345,9 +341,6 @@ function template_preprocess_views_views_json_style_autocomplete(&$variables) {
           }
           else {
             $content = $field->content;
-          }
-          if (!mb_check_encoding($content, 'UTF-8')) {
-            $content = utf8_encode($content);
           }
         }
         else {
