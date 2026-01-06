@@ -27,7 +27,7 @@ else {
      $json = preg_replace(array('/\\\\n/'), '', $json);
   }
 
-  if (isset($_GET[$jsonp_prefix]) && $jsonp_prefix) {
+  if ($jsonp_prefix && isset($_GET[$jsonp_prefix])) {
     $json = check_plain($_GET[$jsonp_prefix]) . '(' . $json . ')';
   }
 
