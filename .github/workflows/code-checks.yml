@@ -13,7 +13,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.1
+          php-version: 8.3
           # No composer nor xdebug, but we need our commandline tools.
           tools: none, phpstan, phpcs
           coverage: none
