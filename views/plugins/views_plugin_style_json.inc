@@ -11,44 +11,44 @@ class views_plugin_style_json extends views_plugin_style {
   /**
    * Implements views_plugin_style::option_definition
    */
-  function option_definition() {
+  public function option_definition() {
     $options = parent::option_definition();
     $options['root_object'] = array(
       'default' => 'nodes',
-      'translatable' => FALSE
+      'translatable' => FALSE,
     );
     $options['top_child_object'] = array(
       'default' => 'node',
-      'translatable' => FALSE
+      'translatable' => FALSE,
     );
     $options['field_output'] = array(
       'default' => 'normal',
-      'translatable' => FALSE
+      'translatable' => FALSE,
     );
     $options['plaintext_output'] = array(
       'default' => TRUE,
-      'translatable' => FALSE
+      'translatable' => FALSE,
     );
     $options['remove_newlines'] = array(
       'default' => NULL,
-      'translatable' => FALSE
+      'translatable' => FALSE,
     );
     $options['format'] = array('default' => 'simple', 'translatable' => FALSE);
     $options['jsonp_prefix'] = array(
       'default' => NULL,
-      'translatable' => FALSE
+      'translatable' => FALSE,
     );
     $options['content_type'] = array(
       'default' => 'default',
-      'translatable' => FALSE
+      'translatable' => FALSE,
     );
     $options['using_views_api_mode'] = array(
       'default' => FALSE,
-      'translatable' => FALSE
+      'translatable' => FALSE,
     );
     $options['translate_labels'] = array(
       'default' => FALSE,
-      'translatable' => FALSE
+      'translatable' => FALSE,
     );
 
     // Encoding options, to be used by json_encode().
@@ -57,32 +57,32 @@ class views_plugin_style_json extends views_plugin_style {
         'object_arrays' => array(
           'default' => NULL,
           'translatable' => FALSE,
-          'bitmask' => 'JSON_FORCE_OBJECT'
+          'bitmask' => 'JSON_FORCE_OBJECT',
         ),
         'numeric_strings' => array(
           'default' => NULL,
           'translatable' => FALSE,
-          'bitmask' => 'JSON_NUMERIC_CHECK'
+          'bitmask' => 'JSON_NUMERIC_CHECK',
         ),
         'bigint_string' => array(
           'default' => NULL,
           'translatable' => FALSE,
-          'bitmask' => 'JSON_BIGINT_AS_STRING'
+          'bitmask' => 'JSON_BIGINT_AS_STRING',
         ),
         'pretty_print' => array(
           'default' => NULL,
           'translatable' => FALSE,
-          'bitmask' => 'JSON_PRETTY_PRINT'
+          'bitmask' => 'JSON_PRETTY_PRINT',
         ),
         'unescaped_slashes' => array(
           'default' => NULL,
           'translatable' => FALSE,
-          'bitmask' => 'JSON_UNESCAPED_SLASHES'
+          'bitmask' => 'JSON_UNESCAPED_SLASHES',
         ),
         'unescaped_unicode' => array(
           'default' => NULL,
           'translatable' => FALSE,
-          'bitmask' => 'JSON_UNESCAPED_UNICODE'
+          'bitmask' => 'JSON_UNESCAPED_UNICODE',
         ),
         'char_encoding' => array(
           'default' => NULL,
@@ -91,12 +91,13 @@ class views_plugin_style_json extends views_plugin_style {
             'JSON_HEX_TAG' => 'JSON_HEX_TAG',
             'JSON_HEX_APOS' => 'JSON_HEX_APOS',
             'JSON_HEX_QUOT' => 'JSON_HEX_QUOT',
-            'JSON_HEX_AMP' => 'JSON_HEX_AMP'
-          )
+            'JSON_HEX_AMP' => 'JSON_HEX_AMP',
+          ),
         ),
-      )
+      ),
     );
-    // Provide Views a flatted copy of 'encoding' in a format it knows how to save and retrieve user data to.
+    // Provide Views a flatted copy of 'encoding' in a format it knows how to
+    // save and retrieve user data to.
     foreach ($options['encoding']['contains'] as $key => $encoding_option) {
       $options[$key] = $encoding_option;
     }
@@ -106,14 +107,15 @@ class views_plugin_style_json extends views_plugin_style {
   /**
    * Provide a form for setting options.
    */
-  function options_form(&$form, &$form_state) {
-    // Grouping options
+  public function options_form(&$form, &$form_state) {
+    // Grouping options.
     $options = array('' => t('- None -'));
     $field_labels = $this->display->handler->get_field_labels(TRUE);
     $options += $field_labels;
     // If there are no fields, we can't group on them.
     if (count($options) > 1) {
-      // This is for backward compability, when there was just a single select form.
+      // This is for backward compability, when there was just a single select
+      // form.
       if (is_string($this->options['grouping'])) {
         $grouping = $this->options['grouping'];
         $this->options['grouping'] = array();
@@ -125,7 +127,11 @@ class views_plugin_style_json extends views_plugin_style {
       }
       $i = 0;
       $grouping = !empty($this->options['grouping'][$i]) ? $this->options['grouping'][$i] : array();
-      $grouping += array('field' => '', 'rendered' => TRUE, 'rendered_strip' => FALSE);
+      $grouping += array(
+        'field' => '',
+        'rendered' => TRUE,
+        'rendered_strip' => FALSE,
+      );
       $form['grouping'][$i]['field'] = array(
         '#type' => 'select',
         '#title' => t('Grouping field'),
@@ -139,8 +145,6 @@ class views_plugin_style_json extends views_plugin_style {
       '#title' => t('Root object name'),
       '#default_value' => $this->options['root_object'],
       '#description' => t('The name of the root object in the JSON document. e.g nodes or users or forum_posts'),
-      //'#process' => array('views_process_dependency'),
-      //'#dependency' => array('radios:schema' => array('raw')),
     );
     $form['top_child_object'] = array(
       '#type' => 'textfield',
@@ -201,7 +205,7 @@ class views_plugin_style_json extends views_plugin_style {
         'application/javascript' => t('application/javascript'),
       ),
       '#default_value' => $this->options['content_type'],
-      '#description' => t('The Content-Type header that will be sent with the JSON output.')
+      '#description' => t('The Content-Type header that will be sent with the JSON output.'),
     );
     $form['using_views_api_mode'] = array(
       '#type' => 'checkbox',
@@ -270,28 +274,29 @@ class views_plugin_style_json extends views_plugin_style {
   }
 
   /**
-   * Implementation of view_style_plugin::theme_functions(). Returns an array of theme functions to use
-   * for the current style plugin
+   * Implements view_style_plugin::theme_functions().
+   *
+   * Returns an array of theme functions to use for the current style plugin.
+   *
    * @return array
    */
-  function theme_functions() {
+  public function theme_functions() {
     $options = $this->options;
     $hook = 'views_views_json_style_' . $options['format'];
     return views_theme_functions($hook, $this->view, $this->display);
   }
 
   /**
-   * Implementation of views_style_plugin::additional_theme_functions(). Returns empty array.
-   * @return array
+   * Implements views_style_plugin::additional_theme_functions().
    */
-  function additional_theme_functions() {
+  public function additional_theme_functions() {
     return array();
   }
 
   /**
-   * Implementation of view_style_plugin::render()
+   * Implements view_style_plugin::render()
    */
-  function render() {
+  public function render() {
     $view = $this->view;
     $options = $this->options;
     $field = $view->field;
@@ -307,9 +312,9 @@ class views_plugin_style_json extends views_plugin_style {
     unset($view->row_index);
 
     return theme($this->theme_functions(), array(
-        'view' => $view,
-        'options' => $options,
-        'rows' => $rows
-      ));
+      'view' => $view,
+      'options' => $options,
+      'rows' => $rows,
+    ));
   }
 }

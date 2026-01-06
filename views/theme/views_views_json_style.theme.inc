@@ -57,13 +57,11 @@ function template_preprocess_views_views_json_style_simple(&$variables) {
             $content = array();
             foreach ($field->content as $key => $value) {
               $safe = $plaintext_output ? strip_tags(html_entity_decode($value, ENT_QUOTES)) : $value;
-              $safe = mb_check_encoding($safe, 'UTF-8') ? $safe : utf8_encode($safe);
               $content[$key] = $safe;
             }
           }
           else {
             $content = $plaintext_output ? strip_tags(html_entity_decode($field->content, ENT_QUOTES)) : $field->content;
-            $content = mb_check_encoding($content, 'UTF-8') ? $content : utf8_encode($content);
           }
         }
         else {
@@ -100,7 +98,7 @@ function template_preprocess_views_views_json_style_simple(&$variables) {
         }
       }
 
-      // check if user wants nested arrays
+      // Check if user wants nested arrays.
       if (strlen($top_child_object) != 0) {
         $object[$top_child_object][$label] = $content;
       }
@@ -111,7 +109,7 @@ function template_preprocess_views_views_json_style_simple(&$variables) {
     $objects[] = $object;
   }
 
-  // check if user wants nested arrays
+  // Check if user wants nested arrays.
   $variables["rows"] = strlen($root_object) != 0 ? array($root_object => $objects) : $objects;
 
   // For pagination, output the total number of pages, the current page, the
@@ -190,7 +188,6 @@ function template_preprocess_views_views_json_style_exhibit(&$variables) {
         }
         if (!$field->is_multiple) {
           $content = $plaintext_output ? strip_tags(html_entity_decode($field->content, ENT_QUOTES)) : $field->content;
-          $content = mb_check_encoding($content, 'UTF-8') ? $content : utf8_encode($content);
         }
         else {
           $content = array();
@@ -212,7 +209,7 @@ function template_preprocess_views_views_json_style_exhibit(&$variables) {
         }
       }
 
-      // check if user wants nested arrays
+      // Check if user wants nested arrays.
       if (strlen($top_child_object) != 0) {
         $object[$top_child_object][$label] = $content;
       }
@@ -229,14 +226,12 @@ function template_preprocess_views_views_json_style_exhibit(&$variables) {
     $objects[] = $object;
   }
 
-  // check if user wants nested arrays
+  // Check if user wants nested arrays.
   $variables["rows"] = strlen($root_object) != 0 ? array($root_object => $objects) : $objects;
 }
 
 /**
- * Prepares variables for...
- *
- * @see
+ * Prepares variables for views-views-json-style-jqgrid.tpl.php.
  */
 function template_preprocess_views_views_json_style_jqgrid(&$variables) {
   $variables['theme_hook_suggestion'] = 'views_views_json_style_simple';
@@ -262,7 +257,6 @@ function template_preprocess_views_views_json_style_jqgrid(&$variables) {
 
         if (!$field->is_multiple) {
           $content = $plaintext_output ? strip_tags(html_entity_decode($field->content, ENT_QUOTES)) : $field->content;
-          $content = mb_check_encoding($content, 'UTF-8') ? $content : utf8_encode($content);
         }
         else {
           $content = array();
@@ -307,13 +301,11 @@ function template_preprocess_views_views_json_style_jqgrid(&$variables) {
     }
   }
 
-  $variables["rows"] = $very_top;//array($root_object => $objects);
+  $variables["rows"] = $very_top;
 }
 
 /**
- * Prepares variables for...
- *
- * @see
+ * Prepares variables for autocomplete style.
  */
 function template_preprocess_views_views_json_style_autocomplete(&$variables) {
   // Use simple theme suggestion.
@@ -349,9 +341,6 @@ function template_preprocess_views_views_json_style_autocomplete(&$variables) {
           }
           else {
             $content = $field->content;
-          }
-          if (!mb_check_encoding($content, 'UTF-8')) {
-            $content = utf8_encode($content);
           }
         }
         else {

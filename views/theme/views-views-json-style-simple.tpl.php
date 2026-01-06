@@ -13,11 +13,12 @@
  * @ingroup themeable
  */
 
-
 if (!empty($options["grouping"][0]["field"])) {
   $group = $options["grouping"][0]["field"];
-  // If a label is set for the grouped field, get it and use it instead of the machine name.
-  // $options uses the labeled name of the field, so we need to match that for grouping.
+  // If a label is set for the grouped field, get it and use it instead of the
+  // machine name.
+  // $options uses the labeled name of the field, so we need to match that for
+  // grouping.
   if ($options['field_output'] != 'raw') {
     $group_label = $view->query->pager->display->handler->handlers['field'][$group]->options['label'];
     if (strlen($group_label) > 0) {
@@ -61,7 +62,7 @@ if (!empty($options["grouping"][0]["field"])) {
   $rows = $grouped;
 }
 
-// Uncomment everything below for prod
+// Uncomment everything below for prod.
 $jsonp_prefix = $options['jsonp_prefix'];
 if ($view->override_path) {
   // We're inside a live preview where the JSON is pretty-printed.
