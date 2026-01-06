@@ -100,7 +100,7 @@ function template_preprocess_views_views_json_style_simple(&$variables) {
         }
       }
 
-      // check if user wants nested arrays
+      // Check if user wants nested arrays.
       if (strlen($top_child_object) != 0) {
         $object[$top_child_object][$label] = $content;
       }
@@ -111,7 +111,7 @@ function template_preprocess_views_views_json_style_simple(&$variables) {
     $objects[] = $object;
   }
 
-  // check if user wants nested arrays
+  // Check if user wants nested arrays.
   $variables["rows"] = strlen($root_object) != 0 ? array($root_object => $objects) : $objects;
 
   // For pagination, output the total number of pages, the current page, the
@@ -212,7 +212,7 @@ function template_preprocess_views_views_json_style_exhibit(&$variables) {
         }
       }
 
-      // check if user wants nested arrays
+      // Check if user wants nested arrays.
       if (strlen($top_child_object) != 0) {
         $object[$top_child_object][$label] = $content;
       }
@@ -229,14 +229,12 @@ function template_preprocess_views_views_json_style_exhibit(&$variables) {
     $objects[] = $object;
   }
 
-  // check if user wants nested arrays
+  // Check if user wants nested arrays.
   $variables["rows"] = strlen($root_object) != 0 ? array($root_object => $objects) : $objects;
 }
 
 /**
- * Prepares variables for...
- *
- * @see
+ * Prepares variables for views-views-json-style-jqgrid.tpl.php.
  */
 function template_preprocess_views_views_json_style_jqgrid(&$variables) {
   $variables['theme_hook_suggestion'] = 'views_views_json_style_simple';
@@ -307,13 +305,11 @@ function template_preprocess_views_views_json_style_jqgrid(&$variables) {
     }
   }
 
-  $variables["rows"] = $very_top;//array($root_object => $objects);
+  $variables["rows"] = $very_top;
 }
 
 /**
- * Prepares variables for...
- *
- * @see
+ * Prepares variables for autocomplete style.
  */
 function template_preprocess_views_views_json_style_autocomplete(&$variables) {
   // Use simple theme suggestion.

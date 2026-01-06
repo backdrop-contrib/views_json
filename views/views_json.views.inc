@@ -41,7 +41,7 @@ function views_json_views_plugins() {
   );
 }
 
-/*
+/**
  * All recognised JSON output formats
  */
 function views_json_views_formats() {
@@ -56,7 +56,8 @@ function views_json_views_formats() {
  * To support additional output formats, do the following:
  * 1. Implement this hook.
  * 2. Implement template_preprocess_views_views_json_style_XXXX (see
- *    example in theme/views_views_json_style.theme.inc) in your module, make sure it is loaded!
+ *    example in theme/views_views_json_style.theme.inc) in your module, make
+ *    sure it is loaded!
  * 3. Create a views-views-json-style-XXXX.tpl.php file in
  *    views_datasource/theme by copying
  *    views-views-json-style-simple.tpl.php. Unfortunately this cannot

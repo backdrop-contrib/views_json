@@ -7,17 +7,17 @@
 /**
  * Alters rendered json row.
  *
- * @param $field_output array
+ * @param array $field_output
  *   The output rendered by _views_json_render_fields().
- * @param $view view
+ * @param view $view
  *   The view that is being rendered.
- * @param $row stdClass
+ * @param stdClass $row
  *   Raw data collected by views_plugin_json_style().
  *
- * @see _views_json_render_fields().
- * @see views_plugin_json_style().
+ * @see _views_json_render_fields()
+ * @see views_plugin_json_style()
  */
-function hook_views_json_render_row_alter(&$field_output, $view, $row) {
+function hook_views_json_render_row_alter(array &$field_output, view $view, $row) {
   if (isset($row->field_entity_reference[0]['raw']['entity'])) {
     $entity = $row->field_entity_reference[0]['raw']['entity'];
     // Note: $field_output is modified by reference, it is not returned.
