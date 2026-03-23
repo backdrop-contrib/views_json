@@ -236,7 +236,7 @@ class views_plugin_style_json extends views_plugin_style {
     );
     $form['bigint_string'] = array(
       '#type' => 'checkbox',
-      '#title' => t('Numeric strings'),
+      '#title' => t('Large integer strings'),
       '#default_value' => $this->options['bigint_string'],
       '#description' => t('Encodes large integers as their original string value.'),
     );
