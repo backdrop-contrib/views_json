@@ -1,0 +1,5 @@
+[ViewsJsonBasicTest]
+name = Views JSON Basic
+description = Tests basic handling and output in Views.
+group = Views JSON
+file = views_json.test
