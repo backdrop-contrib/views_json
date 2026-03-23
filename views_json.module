@@ -417,13 +417,13 @@ function _views_json_debug_stop($var, $location) {
 /**
  * Simple wrapper for json_encode().
  *
- * @param array $rows
- *   Results from template_preprocess_views_views_json_style_simple().
+ * @param array|object $rows
+ *   Results from template preprocess functions.
  * @param int|null $bitmask
  *   Integer to use as the $bitmask parameter for json_encode(), can be null
  *   with default settings for views style options.
  */
-function _views_json_json_encode(array $rows, $bitmask = NULL) {
+function _views_json_json_encode($rows, $bitmask = NULL) {
   if (isset($bitmask)) {
     $json = json_encode($rows, $bitmask);
   }
