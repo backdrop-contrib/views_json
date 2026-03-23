@@ -1,0 +1,114 @@
+<?php
+/**
+ * @file
+ * Functional tests for the Views JSON module.
+ */
+
+/**
+ * Test basic functionality.
+ */
+class ViewsJsonBasicTest extends BackdropWebTestCase {
+
+  protected $profile = 'testing';
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUp() {
+    parent::setUp('views_ui', 'views_json');
+
+    // Dummy content.
+    $type = $this->backdropCreateContentType();
+    $this->backdropCreateNode(array(
+      'title' => 'Test content 1',
+      'type' => $type->type,
+    ));
+    $this->backdropCreateNode(array(
+      'title' => 'Test content 2',
+      'type' => $type->type,
+    ));
+
+    // Create and log in a user with administer views permission.
+    $views_admin = $this->backdropCreateUser(array(
+      'administer views',
+      'access all views',
+      'bypass node access',
+    ));
+    $this->backdropLogin($views_admin);
+    return TRUE;
+  }
+
+  /**
+   * Check output from JSON data format "Simple" (default).
+   */
+  public function testJsonOutputSimple() {
+    $path = $this->randomName(16);
+    $view = array();
+    $view_name = strtolower($this->randomName(16));
+    $view['human_name'] = $this->randomName(16);
+    $view['name'] = $view_name;
+    $view['description'] = $this->randomName(16);
+    $view['page[create]'] = 1;
+    $view['page[style][style_plugin]'] = 'views_json';
+    $view['page[path]'] = $path;
+    $view['page[style][row_plugin]'] = 'fields';
+    $view['page[items_per_page]'] = '0';
+    $view['page[pager]'] = '0';
+    $this->backdropPost('admin/structure/views/add', $view, t('Save view'));
+
+    $this->backdropGet($path);
+    $exptected_output = '{"nodes":[{"node":{"title":"Test content 1"}},{"node":{"title":"Test content 2"}}]}';
+    $this->assertEqual($this->backdropGetContent(), $exptected_output, 'Expected JSON output found.');
+
+    $headers = $this->backdropGetHeaders();
+    $this->assertEqual($headers['content-type'], 'application/json; charset=utf-8', 'Expected content type delivered.');
+
+    // To adapt settings not available via above form:
+    $loaded_view = views_get_view($view_name);
+
+    // Add the "nid" field and check display.
+    $loaded_view->display['default']->display_options['fields']['nid']['id'] = 'nid';
+    $loaded_view->display['default']->display_options['fields']['nid']['table'] = 'node';
+    $loaded_view->display['default']->display_options['fields']['nid']['field'] = 'nid';
+    $loaded_view->save();
+    $this->backdropGet($path);
+    $exptected_output = '{"nodes":[{"node":{"title":"Test content 1","Nid":"1"}},{"node":{"title":"Test content 2","Nid":"2"}}]}';
+    $this->assertEqual($this->backdropGetContent(), $exptected_output, 'Expected JSON output found with NID');
+
+    // Switch numeric option and check display.
+    $loaded_view->display['default']->display_options['style_options']['numeric_strings'] = TRUE;
+    $loaded_view->save();
+    $this->backdropGet($path);
+    $exptected_output = '{"nodes":[{"node":{"title":"Test content 1","Nid":1}},{"node":{"title":"Test content 2","Nid":2}}]}';
+    $this->assertEqual($this->backdropGetContent(), $exptected_output, 'Expected JSON output found, NID displays as number.');
+  }
+
+  /**
+   * Check output from format "Single Simple Object with key value properties"
+   */
+  public function testJsonOutputSimpleObject() {
+    $path = $this->randomName(16);
+    $view = array();
+    $view_name = strtolower($this->randomName(16));
+    $view['human_name'] = $this->randomName(16);
+    $view['name'] = $view_name;
+    $view['description'] = $this->randomName(16);
+    $view['page[create]'] = 1;
+    $view['page[style][style_plugin]'] = 'views_json';
+    $view['page[path]'] = $path;
+    $view['page[style][row_plugin]'] = 'fields';
+    $view['page[items_per_page]'] = 1;
+    $view['page[pager]'] = FALSE;
+    $this->backdropPost('admin/structure/views/add', $view, t('Save view'));
+
+    // Style options aren't available via main form.
+    $loaded_view = views_get_view($view_name);
+    $loaded_view->display['default']->display_options['style_options']['format'] = 'simple_object';
+    $loaded_view->save();
+    $this->backdropGet($path);
+    $this->assertEqual($this->backdropGetContent(), '{"title":"Test content 2"}', 'Expected JSON output found for simple object.');
+    $headers = $this->backdropGetHeaders();
+    $this->assertEqual($headers['content-type'], 'application/json; charset=utf-8', 'Expected content type delivered.');
+  }
+
+}
