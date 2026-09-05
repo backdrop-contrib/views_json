@@ -113,7 +113,7 @@ function _views_json_render_fields($view, $row) {
             $field_raw = $row->{$field_id}[0]['raw']['url'];
             break;
           case 'email':
-            $field_raw =  $row->{$field_id}[0]['raw']['email'];
+            $field_raw = $row->{$field_id}[0]['raw']['email'];
             break;
           case 'video':
           case 'file':
@@ -124,7 +124,7 @@ function _views_json_render_fields($view, $row) {
             $field_raw = $row->{$field_id}[0]['raw']['target_id'];
             break;
           default:
-            $field_raw =  $row->{$field_id}[0]['raw']['value'];
+            $field_raw = $row->{$field_id}[0]['raw']['value'];
             break;
         }
       }
