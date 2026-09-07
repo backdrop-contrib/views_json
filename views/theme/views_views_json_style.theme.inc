@@ -61,7 +61,12 @@ function template_preprocess_views_views_json_style_simple(&$variables) {
             }
           }
           else {
-            $content = $plaintext_output ? strip_tags(html_entity_decode($field->content, ENT_QUOTES)) : $field->content;
+            if (isset($field->content)) {
+              $content = $plaintext_output ? strip_tags(html_entity_decode($field->content, ENT_QUOTES)) : $field->content;
+            }
+            else {
+              $content = '';
+            }
           }
         }
         else {
