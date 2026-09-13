@@ -386,6 +386,7 @@ function template_preprocess_views_views_json_style_autocomplete(&$variables) {
  * Helper function for plaintext output.
  *
  * @param string|null $field_content
+ *   Views field content.
  *
  * @return string
  */
