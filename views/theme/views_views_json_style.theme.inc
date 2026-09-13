@@ -391,7 +391,7 @@ function template_preprocess_views_views_json_style_autocomplete(&$variables) {
  * @return string
  */
 function _views_json_plaintext_output($field_content) {
-  if (empty($field_content)) {
+  if (!isset($field_content)) {
     return '';
   }
   $decoded = html_entity_decode($field_content, ENT_QUOTES);
