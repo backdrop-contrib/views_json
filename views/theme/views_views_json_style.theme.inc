@@ -56,12 +56,12 @@ function template_preprocess_views_views_json_style_simple(&$variables) {
           if (is_array($field->content)) {
             $content = array();
             foreach ($field->content as $key => $value) {
-              $safe = $plaintext_output ? strip_tags(html_entity_decode($value, ENT_QUOTES)) : $value;
+              $safe = $plaintext_output ? _views_json_plaintext_output($value) : $value;
               $content[$key] = $safe;
             }
           }
           else {
-            $content = $plaintext_output ? strip_tags(html_entity_decode($field->content, ENT_QUOTES)) : $field->content;
+            $content = $plaintext_output ? _views_json_plaintext_output($field->content) : $field->content;
           }
         }
         else {
@@ -187,7 +187,7 @@ function template_preprocess_views_views_json_style_exhibit(&$variables) {
           $label = $plaintext_output ? strip_tags($field->id) : $field->id;
         }
         if (!$field->is_multiple) {
-          $content = $plaintext_output ? strip_tags(html_entity_decode($field->content, ENT_QUOTES)) : $field->content;
+          $content = $plaintext_output ? _views_json_plaintext_output($field->content) : $field->content;
         }
         else {
           $content = array();
@@ -256,7 +256,7 @@ function template_preprocess_views_views_json_style_jqgrid(&$variables) {
         }
 
         if (!$field->is_multiple) {
-          $content = $plaintext_output ? strip_tags(html_entity_decode($field->content, ENT_QUOTES)) : $field->content;
+          $content = $plaintext_output ? _views_json_plaintext_output($field->content) : $field->content;
         }
         else {
           $content = array();
@@ -336,8 +336,7 @@ function template_preprocess_views_views_json_style_autocomplete(&$variables) {
       if ($options["field_output"] == "normal") {
         if (!$field->is_multiple) {
           if ($plaintext_output) {
-            $decoded_content = html_entity_decode($field->content, ENT_QUOTES);
-            $content = strip_tags($decoded_content);
+            $content = _views_json_plaintext_output($field->content);
           }
           else {
             $content = $field->content;
@@ -381,4 +380,19 @@ function template_preprocess_views_views_json_style_autocomplete(&$variables) {
   }
 
   $variables["rows"] = $autocomplete;
+}
+
+/**
+ * Helper function for plaintext output.
+ *
+ * @param string|null $field_content
+ *
+ * @return string
+ */
+function _views_json_plaintext_output($field_content) {
+  if (empty($field_content)) {
+    return '';
+  }
+  $decoded = html_entity_decode($field_content, ENT_QUOTES);
+  return strip_tags($decoded);
 }
