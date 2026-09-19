@@ -1,0 +1,169 @@
+<?php
+/**
+ * @file
+ * Functional tests for the Views JSON module.
+ */
+
+/**
+ * Test basic functionality.
+ */
+class ViewsJsonEmptyFieldTest extends BackdropWebTestCase {
+
+  protected $profile = 'testing';
+  protected $field_name = 'field_some_text';
+  protected $field_label = 'Some text field';
+  protected $field_value = 'xxx';
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUp() {
+    parent::setUp('views_ui', 'views_json');
+
+    // Dummy content.
+    $type = $this->backdropCreateContentType(array(
+      'type' => 'post',
+      'name' => 'Post',
+    ));
+    $field = field_create_field(array(
+      'field_name' => $this->field_name,
+      'type' => 'text',
+      'cardinality' => 1,
+    ));
+    $instance = field_create_instance(array(
+      'label' => $this->field_label,
+      'field_name' => $this->field_name,
+      'entity_type' => 'node',
+      'bundle' => 'post',
+    ));
+
+    $this->backdropCreateNode(array(
+      'title' => 'Test content 1',
+      'type' => $type->type,
+    ));
+    // The second node has a text field value.
+    $value = array(
+      'value' => $this->field_value,
+      'safe_value' => $this->field_value,
+    );
+    $this->backdropCreateNode(array(
+      'title' => 'Test content 2',
+      'type' => $type->type,
+      $this->field_name => array(
+        LANGUAGE_NONE => array(
+          0 => $value,
+        ),
+      ),
+    ));
+
+    // Create and log in a user with administer views permission.
+    $views_admin = $this->backdropCreateUser(array(
+      'administer views',
+      'access all views',
+      'bypass node access',
+    ));
+    $this->backdropLogin($views_admin);
+    return TRUE;
+  }
+
+  /**
+   * Check output from JSON data format "Simple" (default).
+   */
+  public function testJsonOutputSimple() {
+    $path = $this->randomName(16);
+    $view = array();
+    $view_name = strtolower($this->randomName(16));
+    $view['human_name'] = $this->randomName(16);
+    $view['name'] = $view_name;
+    $view['description'] = $this->randomName(16);
+    $view['page[create]'] = 1;
+    $view['page[style][style_plugin]'] = 'views_json';
+    $view['page[path]'] = $path;
+    $view['page[style][row_plugin]'] = 'fields';
+    $view['page[items_per_page]'] = '0';
+    $view['page[pager]'] = '0';
+    $this->backdropPost('admin/structure/views/add', $view, t('Save view'));
+
+    // Load the View object and add text field.
+    $view = views_get_view($view_name);
+    $table = 'field_data_' . $this->field_name;
+    $view->add_item('default', 'field', $table, $this->field_name, array(
+      'id' => 'field_' . $this->field_name,
+      'table' => $table,
+      'field' => $this->field_name,
+      'relationship' => 'none',
+    ));
+    $view->save();
+    // Just to make sure it works.
+    $this->backdropGet('admin/structure/views/view/' . $view_name);
+
+    $this->backdropGet($path);
+    $exptected_output = '{"nodes":[{"node":{"title":"Test content 1"}},{"node":{"title":"Test content 2"}}]}';
+    $expected_output = format_string('{"nodes":[{"node":{"title":"Test content 1","!label":""}},{"node":{"title":"Test content 2","!label":"!value"}}]}', array(
+      '!label' => $this->field_label,
+      '!value' => $this->field_value,
+    ));
+    $this->assertEqual($this->backdropGetContent(), $expected_output, 'Expected JSON output found.');
+  }
+
+  /**
+   * Check output from format "Single Simple Object with key value properties"
+   */
+  public function testJsonOutputSimpleObject() {
+    $path = $this->randomName(16);
+    $view = array();
+    $view_name = strtolower($this->randomName(16));
+    $view['human_name'] = $this->randomName(16);
+    $view['name'] = $view_name;
+    $view['description'] = $this->randomName(16);
+    $view['page[create]'] = 1;
+    $view['page[style][style_plugin]'] = 'views_json';
+    $view['page[path]'] = $path;
+    $view['page[style][row_plugin]'] = 'fields';
+    $view['page[items_per_page]'] = 1;
+    $view['page[pager]'] = FALSE;
+    $this->backdropPost('admin/structure/views/add', $view, t('Save view'));
+
+    // Load the View object and add text field.
+    $view = views_get_view($view_name);
+    $table = 'field_data_' . $this->field_name;
+    $view->add_item('default', 'field', $table, $this->field_name, array(
+      'id' => 'field_' . $this->field_name,
+      'table' => $table,
+      'field' => $this->field_name,
+      'relationship' => 'none',
+    ));
+    $view->save();
+    // Just to make sure it works.
+    $this->backdropGet('admin/structure/views/view/' . $view_name);
+
+    // Style options aren't available via main form.
+    $loaded_view = views_get_view($view_name);
+    $loaded_view->display['default']->display_options['style_options']['format'] = 'simple_object';
+    $loaded_view->save();
+
+    $this->backdropGet($path);
+    $expected = format_string('{"title":"Test content 2","!label":"!value"}', array(
+      '!label' => $this->field_label,
+      '!value' => $this->field_value,
+    ));
+    $this->assertEqual($this->backdropGetContent(), $expected, 'Expected JSON output for simple object.');
+
+    // Delete field value and check empty field output.
+    $node = node_load(2);
+    $node->{$this->field_name} = array();
+    $node->save();
+    $this->backdropGet($path);
+    $expected = format_string('{"title":"Test content 2","!label":""}', array(
+      '!label' => $this->field_label,
+    ));
+    $this->assertEqual($this->backdropGetContent(), $expected, 'Expected JSON output with empty field for simple object.');
+
+    // Set the View to hide empty fields, check again.
+    $loaded_view->display['default']->display_options['fields'][$this->field_name]['hide_empty'] = 1;
+    $loaded_view->save();
+    $this->backdropGet($path);
+    $this->assertEqual($this->backdropGetContent(), '{"title":"Test content 2"}', 'Expected JSON output when hide_empty is set.');
+  }
+
+}

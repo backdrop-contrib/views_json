@@ -3,3 +3,9 @@ name = Views JSON Basic
 description = Tests basic handling and output in Views.
 group = Views JSON
 file = views_json.test
+
+[ViewsJsonEmptyFieldTest]
+name = Views JSON Empty Fields
+description = Tests empty field display in Views.
+group = Views JSON
+file = views_json_emptyfield.test
